@@ -4,22 +4,22 @@
 import json
 import mimetypes
 from os import makedirs
-from subprocess import check_output
 
 # Third Party
 import requests
 
 def list_emojis(domain, token):
-    script = ['bin/list_emojis.sh {0} {1}'.format(domain, token)]
-    response = check_output(script, shell=True)
+    url = r'https://%s.slack.com/api/emoji.list' % domain
+    data = [('token', token)]
+    response = requests.post(url, data=data)
     print "\nGot list of emojis from %s Slack domain!" % domain
-    return response
+    emojis = json.loads(response.text)["emoji"]
+    return emojis
 
 def download_emojis(emojis, folder):
     count = 0
     makedirs(folder)
-    emojis = json.loads(emojis)["emoji"]
-    print "\nDownloading emojis from list..."
+    print "\nDownloading emojis to %s folder..." % folder
     for name, url in emojis.iteritems():
         if 'alias' in url:
             continue
