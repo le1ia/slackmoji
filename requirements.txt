@@ -1,0 +1,3 @@
+### Slackmoji ###
+
+requests==2.13.0
