@@ -2,14 +2,13 @@
 
 Python tool for downloading custom Slack emojis from a given team domain.
 
-Requirements
-============
-
+Setup
+=====
+Requirements:
 * [Python 2.7](https://www.python.org/download/releases/2.7/)
 * [Slack API token](https://api.slack.com/custom-integrations/legacy-tokens)
 
-Setup
-=====
+Installation:
 ```
 pip install -r requirements.txt
 ```
