@@ -8,7 +8,6 @@ from os.path import isdir
 
 import requests
 
-# def create_directory()
 def list_emojis(domain, token):
     url = f"https://{domain}.slack.com/api/emoji.list"
     print(url)
