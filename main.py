@@ -1,9 +1,7 @@
 # pylint: disable = C0103, C0111
 
-# Standard Library
 import argparse
 
-# Project Library
 from src.slackmoji import download_emojis, list_emojis
 
 # CLI Args

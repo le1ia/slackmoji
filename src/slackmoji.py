@@ -1,26 +1,34 @@
 # pylint: disable = C0103, C0111
 
-# Standard Library
+import errno
 import json
 import mimetypes
 from os import makedirs
+from os.path import isdir
 
-# Third Party
 import requests
 
+# def create_directory()
 def list_emojis(domain, token):
-    url = r'https://%s.slack.com/api/emoji.list' % domain
+    url = f"https://{domain}.slack.com/api/emoji.list"
+    print(url)
     data = [('token', token)]
     response = requests.post(url, data=data)
-    print "\nGot list of emojis from %s Slack domain!" % domain
+    print(f"\nGot list of emojis from {domain} Slack domain!")
     emojis = json.loads(response.text)["emoji"]
     return emojis
 
 def download_emojis(emojis, folder):
     count = 0
-    makedirs(folder)
-    print "\nDownloading emojis to %s folder..." % folder
-    for name, url in emojis.iteritems():
+    try:
+        makedirs(folder)
+    except OSError as err:
+        if err.errno == errno.EEXIST and isdir(folder):
+            pass
+        else:
+            raise
+    print(f"\nDownloading emojis to {folder} folder...")
+    for name, url in emojis.items():
         if 'alias' in url:
             continue
         else:
@@ -33,5 +41,5 @@ def download_emojis(emojis, folder):
             with open(output, 'wb') as fd:
                 for chunk in res.iter_content(chunk_size=1024):
                     fd.write(chunk)
-            count = count + 1
-    print "\nFinished downloading %s emojis!" % count
+            count += 1
+    print(f"\nFinished downloading {count} emojis!")
