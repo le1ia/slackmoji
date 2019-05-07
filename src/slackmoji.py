@@ -1,24 +1,13 @@
-# pylint: disable = C0103, C0111
-
 import errno
 import json
 import mimetypes
 from os import makedirs
 from os.path import isdir
+import sys
 
 import requests
 
-def list_emojis(domain, token):
-    url = f"https://{domain}.slack.com/api/emoji.list"
-    print(url)
-    data = [('token', token)]
-    response = requests.post(url, data=data)
-    print(f"\nGot list of emojis from {domain} Slack domain!")
-    emojis = json.loads(response.text)["emoji"]
-    return emojis
-
-def download_emojis(emojis, folder):
-    count = 0
+def create_folder(folder):
     try:
         makedirs(folder)
     except OSError as err:
@@ -26,6 +15,10 @@ def download_emojis(emojis, folder):
             pass
         else:
             raise
+
+def download_emojis(emojis, folder):
+    count = 0
+    create_folder(folder)
     print(f"\nDownloading emojis to {folder} folder...")
     for name, url in emojis.items():
         if 'alias' in url:
@@ -42,3 +35,20 @@ def download_emojis(emojis, folder):
                     fd.write(chunk)
             count += 1
     print(f"\nFinished downloading {count} emojis!")
+
+def get_emojis(domain, token):
+    url = f"https://{domain}.slack.com/api/emoji.list"
+    data = [('token', token)]
+    response = requests.post(url, data=data)
+    body = json.loads(response.text)
+    try:
+        emojis = body["emoji"]
+        print(f"\nGot list of emojis from {domain} Slack domain!")
+        return emojis
+    except KeyError:
+        error = body["error"]
+        if error:
+            print(f"\nERROR: {error}")
+            sys.exit(1)
+        else:
+            raise

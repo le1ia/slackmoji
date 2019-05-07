@@ -1,8 +1,6 @@
-# pylint: disable = C0103, C0111
-
 import argparse
 
-from src.slackmoji import download_emojis, list_emojis
+from src.slackmoji import get_emojis, download_emojis
 
 # CLI Args
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -12,7 +10,7 @@ parser.add_argument('-t', '--token', help="Slack API token", required=True)
 args = parser.parse_args()
 
 def main():
-    emojis = list_emojis(args.domain, args.token)
+    emojis = get_emojis(args.domain, args.token)
     download_emojis(emojis, args.folder)
 
 if __name__ == '__main__':
