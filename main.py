@@ -1,6 +1,9 @@
 import argparse
 
-from src.slackmoji import get_emojis, download_emojis
+from src.slackmoji import (
+    download_emojis,
+    get_emojis
+)
 
 # CLI Args
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
