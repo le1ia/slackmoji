@@ -20,7 +20,7 @@ pip install -r requirements.txt
 Basic Usage:
 
 ```bash
-python main.py -d MySlackTeam -t some-auth-token-1234
+python main.py -d SLACK-TEAM -t AUTH-TOKEN
 ```
 
 CLI Options:
